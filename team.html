@@ -1,0 +1,527 @@
+<title>Воронка объявлений ПДС — командная версия</title>
+<style>
+  :root{
+    color-scheme: light;
+    --surface-0:  #f9f9f7;
+    --surface-1:  #fcfcfb;
+    --surface-2:  #ffffff;
+    --ink-1:      #0b0b0b;
+    --ink-2:      #52514e;
+    --ink-3:      #898781;
+    --grid:       #e1e0d9;
+    --baseline:   #c3c2b7;
+    --border:     rgba(11,11,11,0.10);
+    --accent:     #2a78d6;
+    --accent-soft:#e8f0fb;
+    --step-1:     #b7d3f6;
+    --step-2:     #6da7ec;
+    --step-3:     #2a78d6;
+    --step-4:     #184f95;
+    --good:       #0ca30c;
+    --good-soft:  #e6f6e6;
+    --warn:       #fab219;
+    --warn-soft:  #fff6e2;
+    --critical:   #d03b3b;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      color-scheme: dark;
+      --surface-0:  #0d0d0d; --surface-1: #1a1a19; --surface-2: #212120;
+      --ink-1: #ffffff; --ink-2: #c3c2b7; --ink-3: #898781;
+      --grid: #2c2c2a; --baseline: #383835; --border: rgba(255,255,255,0.10);
+      --accent: #3987e5; --accent-soft:#132638;
+      --step-1: #9ec5f4; --step-2: #5598e7; --step-3: #3987e5; --step-4: #1c5cab;
+      --good: #0ca30c; --good-soft:#12281a; --warn: #fab219; --warn-soft:#2c2210; --critical:#e66767;
+    }
+  }
+  :root[data-theme="dark"]{
+    color-scheme: dark;
+    --surface-0:  #0d0d0d; --surface-1: #1a1a19; --surface-2: #212120;
+    --ink-1: #ffffff; --ink-2: #c3c2b7; --ink-3: #898781;
+    --grid: #2c2c2a; --baseline: #383835; --border: rgba(255,255,255,0.10);
+    --accent: #3987e5; --accent-soft:#132638;
+    --step-1: #9ec5f4; --step-2: #5598e7; --step-3: #3987e5; --step-4: #1c5cab;
+    --good: #0ca30c; --good-soft:#12281a; --warn: #fab219; --warn-soft:#2c2210; --critical:#e66767;
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:var(--surface-0); color:var(--ink-1);
+    font-family:"Manrope","Segoe UI",system-ui,-apple-system,sans-serif;
+    padding:32px 24px 64px;
+  }
+  .wrap{max-width:1180px; margin:0 auto;}
+  header{margin-bottom:28px;}
+  h1{
+    font-family:"Manrope",system-ui,sans-serif; font-weight:800; font-size:28px;
+    letter-spacing:-0.01em; margin:0 0 6px; text-wrap:balance;
+  }
+  .badge{
+    display:inline-block; font-size:11px; font-weight:700; letter-spacing:.04em; text-transform:uppercase;
+    background:var(--accent-soft); color:var(--accent); padding:3px 10px; border-radius:20px; margin-bottom:10px;
+  }
+  .meta{color:var(--ink-2); font-size:14px; line-height:1.6; max-width:70ch;}
+  .meta b{color:var(--ink-1); font-weight:600;}
+
+  .kpis{
+    display:grid; grid-template-columns:repeat(auto-fit,minmax(128px,1fr));
+    gap:1px; background:var(--grid); border:1px solid var(--grid);
+    border-radius:12px; overflow:hidden; margin:24px 0 36px;
+  }
+  .kpi{background:var(--surface-1); padding:16px 18px;}
+  .kpi .lbl{font-size:11.5px; color:var(--ink-3); text-transform:uppercase; letter-spacing:.04em;}
+  .kpi .val{
+    font-family:system-ui,sans-serif; font-variant-numeric:tabular-nums;
+    font-weight:700; font-size:22px; margin-top:4px; letter-spacing:-0.01em;
+  }
+  .kpi.hero .val{color:var(--good);}
+  .kpis.rates{margin-top:-24px;}
+  .kpis.rates .kpi .lbl{text-transform:none; letter-spacing:0; font-size:12px; line-height:1.35;}
+  .kpis.rates .kpi .val{font-size:18px; color:var(--ink-2);}
+
+  .campaign{margin-bottom:36px;}
+  .campaign > h2{
+    font-family:"Manrope",system-ui,sans-serif; font-size:15px; font-weight:700;
+    margin:0 0 12px; padding-bottom:8px; border-bottom:1px solid var(--grid);
+    display:flex; align-items:baseline; gap:10px;
+  }
+  .campaign > h2 .n{color:var(--ink-3); font-weight:500; font-size:12.5px;}
+
+  .cards{display:grid; grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); gap:14px;}
+  .card{background:var(--surface-1); border:1px solid var(--border); border-radius:14px; padding:18px 20px 20px;}
+  .card h3{font-size:15px; font-weight:700; margin:0 0 2px;}
+  .card .sub{font-size:12px; color:var(--ink-3); margin-bottom:14px;}
+
+  .toprow{display:flex; gap:18px; margin-bottom:16px; flex-wrap:wrap;}
+  .stat .l{font-size:10.5px; color:var(--ink-3); text-transform:uppercase; letter-spacing:.03em;}
+  .stat .v{font-variant-numeric:tabular-nums; font-weight:700; font-size:16px; margin-top:2px;}
+
+  .funnel{display:flex; flex-direction:column; gap:7px;}
+  .frow{display:grid; grid-template-columns:120px 1fr 78px; align-items:center; gap:10px;}
+  .frow .flabel{font-size:12px; color:var(--ink-2);}
+  .ftrack{position:relative; height:16px; background:var(--surface-2); border-radius:4px; overflow:hidden;}
+  .ffill{height:100%; border-radius:4px 0 0 4px;}
+  .frow .fval{font-variant-numeric:tabular-nums; font-size:12.5px; text-align:right; color:var(--ink-1); font-weight:600;}
+  .frow .fpct{color:var(--ink-3); font-weight:400; font-size:11px;}
+  .frow.final .ffill{background:var(--good) !important;}
+  .frow.final .fval{color:var(--ink-1); font-weight:700;}
+  .frow.final .fpct{font-weight:700; color:var(--good); font-size:12px;}
+  .frow.zero .fval{color:var(--ink-3); font-weight:600;}
+
+  .split{display:flex; gap:8px; margin:10px 0 4px 130px;}
+  .chip{
+    font-size:11px; color:var(--ink-2); background:var(--surface-2);
+    border:1px solid var(--border); border-radius:6px; padding:3px 9px; font-variant-numeric:tabular-nums;
+  }
+  .chip b{color:var(--ink-1);}
+
+  .flag{margin-top:14px; font-size:11.5px; color:var(--ink-3); background:var(--warn-soft); border-radius:6px; padding:6px 10px; line-height:1.4;}
+  .flag.good{background:var(--good-soft);}
+  .flag.critical{background:var(--critical); color:#fff;}
+
+  .subgroup{margin-bottom:10px;}
+  .subgroup h4{font-size:12.5px; font-weight:700; color:var(--ink-2); margin:18px 0 10px; text-transform:uppercase; letter-spacing:.03em;}
+
+  footer{margin-top:44px; padding-top:20px; border-top:1px solid var(--grid); font-size:12px; color:var(--ink-3); line-height:1.7; max-width:80ch;}
+  footer b{color:var(--ink-2);}
+  footer .goals{margin-top:8px; font-family:system-ui,monospace; font-size:11.5px;}
+
+  @media (max-width:640px){
+    .frow{grid-template-columns:96px 1fr 64px;}
+    .split{margin-left:106px;}
+  }
+
+  .plansection{margin-bottom:32px;}
+  .plansection > h2{
+    font-family:"Manrope",system-ui,sans-serif; font-size:15px; font-weight:700;
+    margin:0 0 12px; padding-bottom:8px; border-bottom:1px solid var(--grid);
+    display:flex; align-items:baseline; gap:10px;
+  }
+  .plansection > h2 .n{color:var(--ink-3); font-weight:500; font-size:12.5px;}
+  .plangrid{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:14px;}
+  .plancard{background:var(--surface-1); border:1px solid var(--border); border-radius:14px; padding:16px 18px;}
+  .plancard .lbl{font-size:11.5px; color:var(--ink-3); text-transform:uppercase; letter-spacing:.04em;}
+  .plancard .pf{
+    font-variant-numeric:tabular-nums; font-weight:700; font-size:16px; margin-top:6px; color:var(--ink-1);
+  }
+  .plancard .pf .of{color:var(--ink-3); font-weight:500;}
+  .ptrack{position:relative; height:8px; background:var(--surface-2); border-radius:4px; overflow:hidden; margin-top:10px;}
+  .pfill{height:100%; border-radius:4px;}
+  .plancard .pct{
+    font-variant-numeric:tabular-nums; font-weight:800; font-size:20px; margin-top:6px;
+  }
+  .plancard .pct.behind{color:var(--critical);}
+  .plancard .pct.ontrack{color:var(--warn);}
+  .plancard .pct.ahead{color:var(--good);}
+  .plancard .pacenote{font-size:10.5px; color:var(--ink-3); margin-top:3px;}
+
+  .planrow{
+    display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:14px;
+  }
+  .planmetric{
+    background:var(--surface-2); border:1px solid var(--border); border-radius:10px; padding:9px 12px;
+  }
+  .planmetric .pmtop{display:flex; justify-content:space-between; align-items:baseline; margin-bottom:6px; gap:8px;}
+  .planmetric .pmlabel{font-size:10.5px; color:var(--ink-3); text-transform:uppercase; letter-spacing:.03em; white-space:nowrap;}
+  .planmetric .pmpct{font-weight:800; font-size:15px; font-variant-numeric:tabular-nums;}
+  .planmetric .pmpct.ahead{color:var(--good);}
+  .planmetric .pmpct.ontrack{color:#8a6300;}
+  .planmetric .pmpct.behind{color:var(--critical);}
+  .planmetric .pmbar{position:relative; height:6px; background:var(--surface-1); border-radius:3px; overflow:hidden; margin-bottom:5px;}
+  .planmetric .pmfill{height:100%; border-radius:3px;}
+  .planmetric .pmfill.ahead{background:var(--good);}
+  .planmetric .pmfill.ontrack{background:var(--warn);}
+  .planmetric .pmfill.behind{background:var(--critical);}
+  .planmetric .pmnums{font-size:10px; color:var(--ink-3); font-variant-numeric:tabular-nums;}
+  @media (max-width:560px){ .planrow{grid-template-columns:1fr;} }
+
+  .ctrkpi{margin-bottom:32px;}
+  .ctrkpi > h2{
+    font-family:"Manrope",system-ui,sans-serif; font-size:15px; font-weight:700;
+    margin:0 0 12px; padding-bottom:8px; border-bottom:1px solid var(--grid);
+    display:flex; align-items:baseline; gap:10px;
+  }
+  .ctrkpi > h2 .n{color:var(--ink-3); font-weight:500; font-size:12.5px;}
+  .ctrrow{
+    display:grid; grid-template-columns:1fr 90px 1fr 60px; align-items:center; gap:12px;
+    padding:8px 4px; border-bottom:1px solid var(--grid); font-size:13px;
+  }
+  .ctrrow.head{color:var(--ink-3); font-size:11px; text-transform:uppercase; letter-spacing:.03em; border-bottom:1px solid var(--ink-3);}
+  .ctrrow .name{color:var(--ink-1);}
+  .ctrrow .name.sub{color:var(--ink-3); font-size:12px; padding-left:14px;}
+  .ctrrow .val{font-variant-numeric:tabular-nums; font-weight:700; text-align:right;}
+  .ctrrow .val.below{color:var(--critical);}
+  .ctrrow .val.above{color:var(--good);}
+  .ctrbar{position:relative; height:10px; background:var(--surface-2); border-radius:5px; overflow:hidden;}
+  .ctrbar .fill{height:100%; border-radius:5px;}
+  .ctrbar .target{position:absolute; top:-2px; bottom:-2px; width:2px; background:var(--ink-1);}
+  .ctrrow .gap{font-variant-numeric:tabular-nums; font-size:11px; text-align:right;}
+  .ctrrow .gap.below{color:var(--critical);}
+  .ctrrow .gap.above{color:var(--good);}
+
+  @media print{
+    @page{ size:A4; margin:10mm 12mm; }
+    body{ padding:0; font-size:12.5px; }
+    .campaign{ page-break-before:always; break-before:page; margin-bottom:0; padding-top:8mm; }
+    .campaign:first-of-type{ page-break-before:auto; break-before:auto; }
+    .plansection, .ctrkpi, .ctrdiag, .planrow{ page-break-inside:avoid; break-inside:avoid; }
+    .card{ page-break-inside:avoid; break-inside:avoid; padding:14px 16px 16px; }
+    .cards{ gap:10px; }
+    .subgroup h4{ margin:12px 0 8px; }
+    .funnel{ gap:5px; }
+    .frow{ grid-template-columns:110px 1fr 70px; }
+  }
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&display=swap">
+
+<div class="wrap">
+
+  <header>
+    <div class="badge">Для команды · только цифры</div>
+    <h1>Воронка по объявлениям — ПДС, Яндекс.Директ</h1>
+    <div class="meta">
+      Период: <b>01.09.2026 – 15.09.2026</b> (15.09 — неполный день). Данные: Директ API (показы/клики/CTR) + Метрика API,
+      воронка склеена по <b>ClientID</b> между <b>promo.gazfond-pn.ru</b> и <b>contract-pds.gazfond-pn.ru</b>.
+      Метрика досчитывает часть конверсий задним числом (окно атрибуции 21 день) — цифры за последние 1-2 дня ещё подрастут.
+    </div>
+  </header>
+
+  <div class="kpis">
+    <div class="kpi"><div class="lbl">Показы</div><div class="val">1 830 155</div></div>
+    <div class="kpi"><div class="lbl">Клики</div><div class="val">67 625</div></div>
+    <div class="kpi"><div class="lbl">CTR</div><div class="val">3,70%</div></div>
+    <div class="kpi"><div class="lbl">Заходы на лендинг</div><div class="val">53 773</div></div>
+    <div class="kpi"><div class="lbl">«Заключить договор»</div><div class="val">1 036</div></div>
+    <div class="kpi"><div class="lbl">Переход на оформление</div><div class="val">1 315</div></div>
+    <div class="kpi hero"><div class="lbl">Подписано договоров</div><div class="val">187</div></div>
+  </div>
+
+  <div class="kpis rates">
+    <div class="kpi"><div class="lbl">Заключить договор / Заходы на лендинг</div><div class="val">1,93%</div></div>
+    <div class="kpi"><div class="lbl">Подписано / Переход на оформление</div><div class="val">14,22%</div></div>
+  </div>
+  <!-- ================= ПЛАН НА СЕНТЯБРЬ ================= -->
+  <section class="plansection">
+    <h2>Выполнение плана на сентябрь <span class="n">на 15.09 — прошло 15 из 30 дней месяца (50% времени)</span></h2>
+    <div class="plangrid">
+      <div class="plancard">
+        <div class="lbl">Показы</div>
+        <div class="pf">1 830 155 <span class="of">/ 2 311 797</span></div>
+        <div class="ptrack"><div class="pfill" style="width:79%;background:var(--good);"></div></div>
+        <div class="pct ahead">79%</div>
+        <div class="pacenote">план месяца — опережаем темп (79% при 50% времени)</div>
+      </div>
+      <div class="plancard">
+        <div class="lbl">Клики</div>
+        <div class="pf">67 625 <span class="of">/ 139 845</span></div>
+        <div class="ptrack"><div class="pfill" style="width:48%;background:var(--warn);"></div></div>
+        <div class="pct ontrack">48%</div>
+        <div class="pacenote">план месяца — почти точно в темпе (48% при 50% времени)</div>
+      </div>
+      <div class="plancard">
+        <div class="lbl">Подписано договоров</div>
+        <div class="pf">187 <span class="of">/ 820</span></div>
+        <div class="ptrack"><div class="pfill" style="width:23%;background:var(--critical);"></div></div>
+        <div class="pct behind">23%</div>
+        <div class="pacenote">план месяца — заметно отстаём (23% при 50% времени)</div>
+      </div>
+    </div>  </section>
+
+  <!-- ================= KPI: CTR ≥ 6,5% ================= -->
+  <section class="ctrkpi">
+    <h2>KPI: CTR не ниже 6,5% по всем кампаниям <span class="n">факт на 15.09 · чёрная риска на шкале — цель 6,5%</span></h2>
+    <div class="ctrrow head"><div>Кампания</div><div>CTR</div><div>Шкала</div><div>Разрыв</div></div>
+
+    <div class="ctrrow"><div class="name">Брендовая_Поиск</div><div class="val above">24,29%</div>
+      <div class="ctrbar"><div class="fill" style="width:100%;background:var(--good);"></div><div class="target" style="left:65%;"></div></div>
+      <div class="gap above">+17,79</div></div>
+
+    <div class="ctrrow"><div class="name">Категорийная_Поиск (общая)</div><div class="val below">2,78%</div>
+      <div class="ctrbar"><div class="fill" style="width:27.8%;background:var(--critical);"></div><div class="target" style="left:65%;"></div></div>
+      <div class="gap below">−3,72</div></div>
+    <div class="ctrrow"><div class="name sub">— ПДС прямой интент</div><div class="val below">2,56%</div>
+      <div class="ctrbar"><div class="fill" style="width:25.6%;background:var(--critical);"></div><div class="target" style="left:65%;"></div></div>
+      <div class="gap below">−3,94</div></div>
+    <div class="ctrrow"><div class="name sub">— инф. спрос</div><div class="val below">2,84%</div>
+      <div class="ctrbar"><div class="fill" style="width:28.4%;background:var(--critical);"></div><div class="target" style="left:65%;"></div></div>
+      <div class="gap below">−3,66</div></div>
+
+    <div class="ctrrow"><div class="name">Пополнение_Поиск</div><div class="val below">3,01%</div>
+      <div class="ctrbar"><div class="fill" style="width:30.1%;background:var(--critical);"></div><div class="target" style="left:65%;"></div></div>
+      <div class="gap below">−3,49</div></div>
+
+    <div class="ctrrow"><div class="name">Сегменты_Поиск (общая, за весь период)</div><div class="val below">2,50%</div>
+      <div class="ctrbar"><div class="fill" style="width:25.0%;background:var(--critical);"></div><div class="target" style="left:65%;"></div></div>
+      <div class="gap below">−4,00</div></div>
+    <div class="ctrrow"><div class="name sub">— Мужчины 35–54</div><div class="val below">1,92%</div>
+      <div class="ctrbar"><div class="fill" style="width:19.2%;background:var(--critical);"></div><div class="target" style="left:65%;"></div></div>
+      <div class="gap below">−4,58</div></div>
+    <div class="ctrrow"><div class="name sub">— тема «Капитал»</div><div class="val below">4,24%</div>
+      <div class="ctrbar"><div class="fill" style="width:42.4%;background:var(--critical);"></div><div class="target" style="left:65%;"></div></div>
+      <div class="gap below">−2,26</div></div>
+
+    <div class="ctrrow"><div class="name">Акция Х2_РСЯ</div><div class="val below">1,67%</div>
+      <div class="ctrbar"><div class="fill" style="width:16.7%;background:var(--critical);"></div><div class="target" style="left:65%;"></div></div>
+      <div class="gap below">−4,83</div></div>  </section>
+
+  <!-- ================= ДИАГНОСТИКА CTR ================= -->
+  <section class="ctrdiag">
+    <h2>Почему CTR ниже цели — и что можно сделать <span class="n">данные Директа на 01–15.09</span></h2>
+
+    <div class="ctrrow head"><div>Кампания</div><div>CTR</div><div>Средняя позиция показа</div><div>Стратегия / цена клика</div></div>
+    <div class="ctrrow"><div class="name">Брендовая_Поиск</div><div class="val above">24,29%</div><div class="val above">2,70</div><div style="font-size:11px;color:var(--ink-3);">Макс. кликов, бюджет 80 000₽/нед</div></div>
+    <div class="ctrrow"><div class="name">Категорийная_Поиск</div><div class="val below">2,78%</div><div class="val below">4,80</div><div style="font-size:11px;color:var(--ink-3);">Пилот с 14.09: цель 58₽ (было 38₽), факт за период ~19,1₽</div></div>
+    <div class="ctrrow"><div class="name">Пополнение_Поиск</div><div class="val below">3,01%</div><div class="val below">4,75</div><div style="font-size:11px;color:var(--ink-3);">Пилот с 14.09: цель 63₽ (было 22₽), факт за период ~16,7₽</div></div>
+    <div class="ctrrow"><div class="name">Сегменты_Поиск</div><div class="val below">2,50%</div><div class="val below">4,89</div><div style="font-size:11px;color:var(--ink-3);">Цель 20₽, факт ~22,0₽ · с 14.09 только Мужчины + Капитал</div></div>  </section>
+
+  <!-- ================= БРЕНДОВАЯ ================= -->
+  <section class="campaign">
+    <h2>Брендовая_Поиск <span class="n">1 объявление</span></h2>
+    <div class="planrow">
+      <div class="planmetric"><div class="pmtop"><span class="pmlabel">Показы</span><span class="pmpct ahead">88%</span></div><div class="pmbar"><div class="pmfill ahead" style="width:88%"></div></div><div class="pmnums">125 066 / 141 982</div></div>
+      <div class="planmetric"><div class="pmtop"><span class="pmlabel">Клики</span><span class="pmpct ahead">93%</span></div><div class="pmbar"><div class="pmfill ahead" style="width:93%"></div></div><div class="pmnums">30 377 / 32 656</div></div>
+      <div class="planmetric"><div class="pmtop"><span class="pmlabel">Подписано</span><span class="pmpct behind">37%</span></div><div class="pmbar"><div class="pmfill behind" style="width:37%"></div></div><div class="pmnums">146 / 400</div></div>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <h3>Брендовая кампания_Поиск</h3>
+        <div class="sub">utm_content: brand_poisk_new</div>
+        <div class="toprow">
+          <div class="stat"><div class="l">Показы</div><div class="v">125 066</div></div>
+          <div class="stat"><div class="l">Клики</div><div class="v">30 377</div></div>
+          <div class="stat"><div class="l">CTR</div><div class="v">24,29%</div></div>
+        </div>
+        <div class="funnel">
+          <div class="frow"><div class="flabel">Клики</div><div class="ftrack"><div class="ffill" style="width:100%;background:var(--step-1);"></div></div><div class="fval">30 377</div></div>
+          <div class="frow"><div class="flabel">Заходы на лендинг</div><div class="ftrack"><div class="ffill" style="width:80.8%;background:var(--step-2);"></div></div><div class="fval">24 545 <span class="fpct">80,8%</span></div></div>
+          <div class="split"><div class="chip">Личный кабинет <b>10 966</b></div></div>
+          <div class="frow"><div class="flabel">«Заключить договор»</div><div class="ftrack"><div class="ffill" style="width:2.0%;background:var(--step-3);"></div></div><div class="fval">613 <span class="fpct">2,02%</span></div></div>
+          <div class="frow"><div class="flabel">Переход на оформление</div><div class="ftrack"><div class="ffill" style="width:2.6%;background:var(--step-4);"></div></div><div class="fval">775 <span class="fpct">2,55%</span></div></div>
+          <div class="split">
+            <div class="chip">Госуслуги <b>242</b></div>
+            <div class="chip">Вручную <b>95</b></div>
+          </div>
+          <div class="frow final"><div class="flabel">Подписано</div><div class="ftrack"><div class="ffill" style="width:0.5%;"></div></div><div class="fval">146 <span class="fpct">18,8%</span></div></div>
+        </div>      </div>
+    </div>
+  </section>
+
+  <!-- ================= КАТЕГОРИЙНАЯ ================= -->
+  <section class="campaign">
+    <h2>Категорийная_Поиск <span class="n">2 объявления · минус-слова с 02–03.09</span></h2>
+    <div class="planrow">
+      <div class="planmetric"><div class="pmtop"><span class="pmlabel">Показы</span><span class="pmpct ahead">70%</span></div><div class="pmbar"><div class="pmfill ahead" style="width:70%"></div></div><div class="pmnums">330 244 / 469 815</div></div>
+      <div class="planmetric"><div class="pmtop"><span class="pmlabel">Клики</span><span class="pmpct behind">33%</span></div><div class="pmbar"><div class="pmfill behind" style="width:33%"></div></div><div class="pmnums">9 166 / 28 189 <span style="opacity:.7">(CTR-план 6%)</span></div></div>
+      <div class="planmetric"><div class="pmtop"><span class="pmlabel">Подписано</span><span class="pmpct behind">13%</span></div><div class="pmbar"><div class="pmfill behind" style="width:13%"></div></div><div class="pmnums">25 / 200</div></div>
+    </div>    <div class="cards">
+      <div class="card">
+        <h3>ПДС — прямой интент</h3>
+        <div class="sub">utm_content: category_poisk_direct</div>
+        <div class="toprow">
+          <div class="stat"><div class="l">Показы</div><div class="v">76 735</div></div>
+          <div class="stat"><div class="l">Клики</div><div class="v">1 961</div></div>
+          <div class="stat"><div class="l">CTR</div><div class="v">2,56%</div></div>
+        </div>
+        <div class="funnel">
+          <div class="frow"><div class="flabel">Клики</div><div class="ftrack"><div class="ffill" style="width:100%;background:var(--step-1);"></div></div><div class="fval">1 961</div></div>
+          <div class="frow"><div class="flabel">Заходы на лендинг</div><div class="ftrack"><div class="ffill" style="width:93.3%;background:var(--step-2);"></div></div><div class="fval">1 829 <span class="fpct">93,3%</span></div></div>
+          <div class="split"><div class="chip">Личный кабинет <b>37</b></div></div>
+          <div class="frow"><div class="flabel">«Заключить договор»</div><div class="ftrack"><div class="ffill" style="width:5.1%;background:var(--step-3);"></div></div><div class="fval">100 <span class="fpct">5,10%</span></div></div>
+          <div class="frow"><div class="flabel">Переход на оформление</div><div class="ftrack"><div class="ffill" style="width:6.0%;background:var(--step-4);"></div></div><div class="fval">117 <span class="fpct">5,97%</span></div></div>
+          <div class="split">
+            <div class="chip">Госуслуги <b>21</b></div>
+            <div class="chip">Вручную <b>9</b></div>
+          </div>
+          <div class="frow final"><div class="flabel">Подписано</div><div class="ftrack"><div class="ffill" style="width:0.6%;"></div></div><div class="fval">12 <span class="fpct">10,3%</span></div></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Пенсионные накопления — инф. спрос</h3>
+        <div class="sub">utm_content: category_poisk_inf_spros</div>
+        <div class="toprow">
+          <div class="stat"><div class="l">Показы</div><div class="v">252 635</div></div>
+          <div class="stat"><div class="l">Клики</div><div class="v">7 177</div></div>
+          <div class="stat"><div class="l">CTR</div><div class="v">2,84%</div></div>
+        </div>
+        <div class="funnel">
+          <div class="frow"><div class="flabel">Клики</div><div class="ftrack"><div class="ffill" style="width:100%;background:var(--step-1);"></div></div><div class="fval">7 177</div></div>
+          <div class="frow"><div class="flabel">Заходы на лендинг</div><div class="ftrack"><div class="ffill" style="width:87.9%;background:var(--step-2);"></div></div><div class="fval">6 308 <span class="fpct">87,9%</span></div></div>
+          <div class="split"><div class="chip">Личный кабинет <b>143</b></div></div>
+          <div class="frow"><div class="flabel">«Заключить договор»</div><div class="ftrack"><div class="ffill" style="width:1.9%;background:var(--step-3);"></div></div><div class="fval">137 <span class="fpct">1,91%</span></div></div>
+          <div class="frow"><div class="flabel">Переход на оформление</div><div class="ftrack"><div class="ffill" style="width:2.1%;background:var(--step-4);"></div></div><div class="fval">154 <span class="fpct">2,15%</span></div></div>
+          <div class="split">
+            <div class="chip">Госуслуги <b>28</b></div>
+            <div class="chip">Вручную <b>9</b></div>
+          </div>
+          <div class="frow final"><div class="flabel">Подписано</div><div class="ftrack"><div class="ffill" style="width:0.2%;"></div></div><div class="fval">13 <span class="fpct">8,4%</span></div></div>
+        </div>      </div>
+    </div>
+  </section>
+
+  <!-- ================= ПОПОЛНЕНИЕ ================= -->
+  <section class="campaign">
+    <h2>Пополнение_Поиск <span class="n">1 объявление</span></h2>
+    <div class="planrow">
+      <div class="planmetric"><div class="pmtop"><span class="pmlabel">Показы</span><span class="pmpct ahead">61%</span></div><div class="pmbar"><div class="pmfill ahead" style="width:61%"></div></div><div class="pmnums">245 440 / 400 000</div></div>
+      <div class="planmetric"><div class="pmtop"><span class="pmlabel">Клики</span><span class="pmpct behind">31%</span></div><div class="pmbar"><div class="pmfill behind" style="width:31%"></div></div><div class="pmnums">7 392 / 24 000</div></div>
+      <div class="planmetric"><div class="pmtop"><span class="pmlabel">Подписано</span><span class="pmpct behind">14%</span></div><div class="pmbar"><div class="pmfill behind" style="width:14%"></div></div><div class="pmnums">10 / 70</div></div>
+    </div>    <div class="cards">
+      <div class="card">
+        <h3>Кампания на пополнение_Поиск</h3>
+        <div class="sub">utm_content: topup_poisk_new</div>
+        <div class="toprow">
+          <div class="stat"><div class="l">Показы</div><div class="v">245 440</div></div>
+          <div class="stat"><div class="l">Клики</div><div class="v">7 392</div></div>
+          <div class="stat"><div class="l">CTR</div><div class="v">3,01%</div></div>
+        </div>
+        <div class="funnel">
+          <div class="frow"><div class="flabel">Клики</div><div class="ftrack"><div class="ffill" style="width:100%;background:var(--step-1);"></div></div><div class="fval">7 392</div></div>
+          <div class="frow"><div class="flabel">Заходы на лендинг</div><div class="ftrack"><div class="ffill" style="width:73.8%;background:var(--step-2);"></div></div><div class="fval">5 457 <span class="fpct">73,8%</span></div></div>
+          <div class="split"><div class="chip">Личный кабинет <b>204</b></div></div>
+          <div class="frow"><div class="flabel">«Заключить договор»</div><div class="ftrack"><div class="ffill" style="width:1.1%;background:var(--step-3);"></div></div><div class="fval">79 <span class="fpct">1,07%</span></div></div>
+          <div class="frow"><div class="flabel">Переход на оформление</div><div class="ftrack"><div class="ffill" style="width:1.5%;background:var(--step-4);"></div></div><div class="fval">111 <span class="fpct">1,50%</span></div></div>
+          <div class="split">
+            <div class="chip">Госуслуги <b>10</b></div>
+            <div class="chip">Вручную <b>8</b></div>
+          </div>
+          <div class="frow final"><div class="flabel">Подписано</div><div class="ftrack"><div class="ffill" style="width:0.1%;"></div></div><div class="fval">10 <span class="fpct">9,0%</span></div></div>
+        </div>      </div>
+    </div>
+  </section>
+
+  <!-- ================= СЕГМЕНТЫ ================= -->
+  <section class="campaign">
+    <h2>Сегменты_Поиск <span class="n">2 объявления активны из 5 · 3 отключены 14.09</span></h2>
+    <div class="planrow">
+      <div class="planmetric"><div class="pmtop"><span class="pmlabel">Показы</span><span class="pmpct ahead">73%</span></div><div class="pmbar"><div class="pmfill ahead" style="width:73%"></div></div><div class="pmnums">218 743 / 300 000</div></div>
+      <div class="planmetric"><div class="pmtop"><span class="pmlabel">Клики</span><span class="pmpct behind">37%</span></div><div class="pmbar"><div class="pmfill behind" style="width:37%"></div></div><div class="pmnums">5 475 / 15 000</div></div>
+      <div class="planmetric"><div class="pmtop"><span class="pmlabel">Подписано</span><span class="pmpct behind">12%</span></div><div class="pmbar"><div class="pmfill behind" style="width:12%"></div></div><div class="pmnums">6 / 50</div></div>
+    </div>    <div class="cards">
+      <div class="card">
+        <h3>Мужчины 35–54</h3>
+        <div class="sub">utm_content: segment_poisk_men · «Что останется вам? Собственный капитал в ПДС»</div>
+        <div class="toprow">
+          <div class="stat"><div class="l">Показы</div><div class="v">29 653</div></div>
+          <div class="stat"><div class="l">Клики</div><div class="v">568</div></div>
+          <div class="stat"><div class="l">CTR</div><div class="v">1,92%</div></div>
+        </div>
+        <div class="funnel">
+          <div class="frow"><div class="flabel">Клики</div><div class="ftrack"><div class="ffill" style="width:100%;background:var(--step-1);"></div></div><div class="fval">568</div></div>
+          <div class="frow"><div class="flabel">Заходы на лендинг</div><div class="ftrack"><div class="ffill" style="width:81.7%;background:var(--step-2);"></div></div><div class="fval">464 <span class="fpct">81,7%</span></div></div>
+          <div class="split"><div class="chip">Личный кабинет <b>24</b></div></div>
+          <div class="frow"><div class="flabel">«Заключить договор»</div><div class="ftrack"><div class="ffill" style="width:3.5%;background:var(--step-3);"></div></div><div class="fval">20 <span class="fpct">3,52%</span></div></div>
+          <div class="frow"><div class="flabel">Переход на оформление</div><div class="ftrack"><div class="ffill" style="width:4.8%;background:var(--step-4);"></div></div><div class="fval">27 <span class="fpct">4,75%</span></div></div>
+          <div class="split">
+            <div class="chip">Госуслуги <b>6</b></div>
+            <div class="chip">Вручную <b>0</b></div>
+          </div>
+          <div class="frow final"><div class="flabel">Подписано</div><div class="ftrack"><div class="ffill" style="width:0.9%;"></div></div><div class="fval">5 <span class="fpct">18,5%</span></div></div>
+        </div>      </div>
+
+      <div class="card">
+        <h3>Тема «Капитал»</h3>
+        <div class="sub">«Не копите — формируйте капитал» · utm_content: segment_poisk_pension_capital</div>
+        <div class="toprow">
+          <div class="stat"><div class="l">Показы</div><div class="v">63 180</div></div>
+          <div class="stat"><div class="l">Клики</div><div class="v">2 679</div></div>
+          <div class="stat"><div class="l">CTR</div><div class="v">4,24%</div></div>
+        </div>
+        <div class="funnel">
+          <div class="frow"><div class="flabel">Клики</div><div class="ftrack"><div class="ffill" style="width:100%;background:var(--step-1);"></div></div><div class="fval">2 679</div></div>
+          <div class="frow"><div class="flabel">Заходы на лендинг</div><div class="ftrack"><div class="ffill" style="width:86.4%;background:var(--step-2);"></div></div><div class="fval">2 314 <span class="fpct">86,4%</span></div></div>
+          <div class="split"><div class="chip">Личный кабинет <b>37</b></div></div>
+          <div class="frow"><div class="flabel">«Заключить договор»</div><div class="ftrack"><div class="ffill" style="width:1.1%;background:var(--step-3);"></div></div><div class="fval">29 <span class="fpct">1,08%</span></div></div>
+          <div class="frow"><div class="flabel">Переход на оформление</div><div class="ftrack"><div class="ffill" style="width:1.2%;background:var(--step-4);"></div></div><div class="fval">32 <span class="fpct">1,19%</span></div></div>
+          <div class="split">
+            <div class="chip">Госуслуги <b>2</b></div>
+            <div class="chip">Вручную <b>2</b></div>
+          </div>
+          <div class="frow final"><div class="flabel">Подписано</div><div class="ftrack"><div class="ffill" style="width:0.06%;"></div></div><div class="fval">1 <span class="fpct">3,1%</span></div></div>
+        </div>      </div>
+    </div>
+  </section>
+
+  <!-- ================= АКЦИЯ Х2 ================= -->
+  <section class="campaign">
+    <h2>Акция Х2_РСЯ <span class="n">1 объявление · РСЯ, баннеры</span></h2>
+    <div class="planrow">
+      <div class="planmetric"><div class="pmtop"><span class="pmlabel">Показы</span><span class="pmpct ahead">91%</span></div><div class="pmbar"><div class="pmfill ahead" style="width:91%"></div></div><div class="pmnums">910 662 / 1 000 000</div></div>
+      <div class="planmetric"><div class="pmtop"><span class="pmlabel">Клики</span><span class="pmpct behind">38%</span></div><div class="pmbar"><div class="pmfill behind" style="width:38%"></div></div><div class="pmnums">15 215 / 40 000</div></div>
+      <div class="planmetric"><div class="pmtop"><span class="pmlabel">Подписано</span><span class="pmpct behind">19%</span></div><div class="pmbar"><div class="pmfill behind" style="width:19%"></div></div><div class="pmnums">19 / 100</div></div>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <h3>Акция Х2_РСЯ</h3>
+        <div class="sub">utm_content: promo_x2_rsya</div>
+        <div class="toprow">
+          <div class="stat"><div class="l">Показы</div><div class="v">910 662</div></div>
+          <div class="stat"><div class="l">Клики</div><div class="v">15 215</div></div>
+          <div class="stat"><div class="l">CTR</div><div class="v">1,67%</div></div>
+        </div>
+        <div class="funnel">
+          <div class="frow"><div class="flabel">Клики</div><div class="ftrack"><div class="ffill" style="width:100%;background:var(--step-1);"></div></div><div class="fval">15 215</div></div>
+          <div class="frow"><div class="flabel">Заходы на лендинг</div><div class="ftrack"><div class="ffill" style="width:72.8%;background:var(--step-2);"></div></div><div class="fval">11 074 <span class="fpct">72,8%</span></div></div>
+          <div class="split"><div class="chip">Пополнить счёт <b>107</b></div></div>
+          <div class="frow"><div class="flabel">«Оформить договор»</div><div class="ftrack"><div class="ffill" style="width:0.31%;background:var(--step-3);"></div></div><div class="fval">47 <span class="fpct">0,31%</span></div></div>
+          <div class="frow"><div class="flabel">Переход на оформление</div><div class="ftrack"><div class="ffill" style="width:0.19%;background:var(--step-4);"></div></div><div class="fval">29 <span class="fpct">0,19%</span></div></div>
+          <div class="split">
+            <div class="chip">Госуслуги <b>7</b></div>
+            <div class="chip">Вручную <b>4</b></div>
+          </div>
+          <div class="frow final"><div class="flabel">Подписано</div><div class="ftrack"><div class="ffill" style="width:0.13%;"></div></div><div class="fval">19 <span class="fpct">65,5%</span></div></div>
+        </div>      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div><b>ID целей «Заключить договор» (promo-лендинг ПДС):</b> сумма 547394075, 547394098, 547394144, 547394174, 547394814.</div>
+    <div><b>ID цели «Личный кабинет» (promo-лендинг ПДС):</b> 547394401.</div>
+    <div><b>ID целей на странице оформления (contract-pds):</b> «Госуслуги» 516575544 · «Вручную» 516575559 · «Подписать договор» 516575583.</div>
+    <div><b>ID целей лендинга акции Х2 (promo-лендинг Х2):</b> «Пополнить счёт» — сумма 592748770, 592749259, 592749505, 592750158 · «Оформить договор» — сумма 592748908, 592750208, 593473367.</div>
+    <div>«Переход на оформление» для поисковых кампаний — визиты на <span class="goals">contract-pds.gazfond-pn.ru/?u=yandex_landing</span> конкретно с этим URL-параметром.</div>
+    <div>«Подписано» — доля от «Переход на оформление» (не от кликов), выделена жирным.</div>
+    <div>Шаги воронки — независимые счётчики сессий (человек может дойти до оформления, не нажав отслеживаемую кнопку на лендинге), не строго последовательный путь одного пользователя.</div>
+  </footer>
+
+</div>
