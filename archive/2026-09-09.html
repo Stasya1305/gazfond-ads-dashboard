@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Дашборд на 09.09.2026 — архив</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&display=swap">
+<style>
+  :root{
+    color-scheme: light;
+    --surface-0:  #f9f9f7; --surface-1: #fcfcfb; --surface-2: #ffffff;
+    --ink-1: #0b0b0b; --ink-2: #52514e; --ink-3: #898781;
+    --grid: #e1e0d9; --border: rgba(11,11,11,0.10);
+    --accent: #2a78d6; --accent-soft:#e8f0fb;
+    --good: #0ca30c; --good-soft:#e6f6e6;
+    --warn: #fab219; --warn-soft:#fff6e2;
+    --critical: #d03b3b;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      color-scheme: dark;
+      --surface-0:#0d0d0d; --surface-1:#1a1a19; --surface-2:#212120;
+      --ink-1:#ffffff; --ink-2:#c3c2b7; --ink-3:#898781;
+      --grid:#2c2c2a; --border:rgba(255,255,255,0.10);
+      --accent:#3987e5; --accent-soft:#132638;
+      --good:#0ca30c; --good-soft:#12281a; --warn:#fab219; --warn-soft:#2c2210; --critical:#e66767;
+    }
+  }
+  :root[data-theme="dark"]{
+    color-scheme: dark;
+    --surface-0:#0d0d0d; --surface-1:#1a1a19; --surface-2:#212120;
+    --ink-1:#ffffff; --ink-2:#c3c2b7; --ink-3:#898781;
+    --grid:#2c2c2a; --border:rgba(255,255,255,0.10);
+    --accent:#3987e5; --accent-soft:#132638;
+    --good:#0ca30c; --good-soft:#12281a; --warn:#fab219; --warn-soft:#2c2210; --critical:#e66767;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; background:var(--surface-0); color:var(--ink-1); font-family:"Manrope","Segoe UI",system-ui,-apple-system,sans-serif; padding:32px 24px 64px;}
+  .wrap{max-width:980px; margin:0 auto;}
+  .back{font-size:13px; color:var(--accent); text-decoration:none; font-weight:600; display:inline-block; margin-bottom:16px;}
+  .badge{display:inline-block; font-size:11px; font-weight:700; letter-spacing:.04em; text-transform:uppercase; background:var(--accent-soft); color:var(--accent); padding:3px 10px; border-radius:20px; margin-bottom:10px;}
+  h1{font-size:24px; font-weight:800; letter-spacing:-0.01em; margin:0 0 6px;}
+  .meta{color:var(--ink-2); font-size:13.5px; line-height:1.6; max-width:70ch; margin-bottom:24px;}
+
+  .kpis{display:grid; grid-template-columns:repeat(auto-fit,minmax(128px,1fr)); gap:1px; background:var(--grid); border:1px solid var(--grid); border-radius:12px; overflow:hidden; margin:16px 0 28px;}
+  .kpi{background:var(--surface-1); padding:14px 16px;}
+  .kpi .lbl{font-size:11px; color:var(--ink-3); text-transform:uppercase; letter-spacing:.04em;}
+  .kpi .val{font-variant-numeric:tabular-nums; font-weight:700; font-size:19px; margin-top:4px;}
+  .kpi.hero .val{color:var(--good);}
+
+  .plangrid{display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:12px; margin-bottom:28px;}
+  .plancard{background:var(--surface-1); border:1px solid var(--border); border-radius:12px; padding:14px 16px;}
+  .plancard .lbl{font-size:11px; color:var(--ink-3); text-transform:uppercase; letter-spacing:.04em;}
+  .plancard .pf{font-variant-numeric:tabular-nums; font-weight:700; font-size:14px; margin-top:5px;}
+  .plancard .pf .of{color:var(--ink-3); font-weight:500;}
+  .ptrack{position:relative; height:7px; background:var(--surface-2); border-radius:4px; overflow:hidden; margin-top:8px;}
+  .pfill{height:100%; border-radius:4px;}
+  .plancard .pct{font-variant-numeric:tabular-nums; font-weight:800; font-size:17px; margin-top:5px;}
+  .plancard .pct.behind{color:var(--critical);} .plancard .pct.ontrack{color:#8a6300;} .plancard .pct.ahead{color:var(--good);}
+
+  h2{font-size:15px; font-weight:700; margin:28px 0 12px; padding-bottom:6px; border-bottom:1px solid var(--grid);}
+  table{width:100%; border-collapse:collapse; background:var(--surface-1); border:1px solid var(--border); border-radius:12px; overflow:hidden; font-size:13px;}
+  thead th{text-align:right; font-size:10.5px; text-transform:uppercase; letter-spacing:.03em; color:var(--ink-3); padding:9px 12px; border-bottom:1px solid var(--grid); font-weight:700;}
+  thead th:first-child{text-align:left;}
+  tbody td{padding:8px 12px; border-bottom:1px solid var(--grid); font-variant-numeric:tabular-nums; text-align:right;}
+  tbody td:first-child{text-align:left; font-weight:600; color:var(--ink-1);}
+  tbody tr.sub td:first-child{padding-left:24px; font-weight:400; color:var(--ink-2); font-size:12.5px;}
+  tbody tr:last-child td{border-bottom:none;}
+  tbody tr.total td{font-weight:700; background:var(--surface-2);}
+
+  footer{margin-top:32px; font-size:11.5px; color:var(--ink-3); line-height:1.6; max-width:70ch;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="../archive.html">← К архиву по датам</a>
+  <div class="badge">Архив · снимок на дату</div>
+  <h1>Воронка по объявлениям — ПДС, на 09.09.2026</h1>
+  <div class="meta">
+    Период: <b>01.09.2026 – 09.09.2026</b> (9 из 30 дней месяца, 30% времени). Упрощённая историческая версия — только цифры, без комментариев.
+  </div>
+
+  <div class="kpis">
+    <div class="kpi"><div class="lbl">Показы</div><div class="val">1 432 631</div></div>
+    <div class="kpi"><div class="lbl">Клики</div><div class="val">47 306</div></div>
+    <div class="kpi"><div class="lbl">CTR</div><div class="val">3,30%</div></div>
+    <div class="kpi"><div class="lbl">Заходы на лендинг</div><div class="val">36 695</div></div>
+    <div class="kpi"><div class="lbl">«Заключить договор»</div><div class="val">678</div></div>
+    <div class="kpi"><div class="lbl">Переход на оформление</div><div class="val">876</div></div>
+    <div class="kpi hero"><div class="lbl">Подписано договоров</div><div class="val">112</div></div>
+  </div>
+
+  <div class="plangrid">
+    <div class="plancard"><div class="lbl">Показы</div><div class="pf">1 432 631 <span class="of">/ 2 311 797</span></div><div class="ptrack"><div class="pfill" style="width:62%;background:var(--good);"></div></div><div class="pct ahead">62%</div></div>
+    <div class="plancard"><div class="lbl">Клики</div><div class="pf">47 306 <span class="of">/ 139 845</span></div><div class="ptrack"><div class="pfill" style="width:34%;background:var(--good);"></div></div><div class="pct ahead">34%</div></div>
+    <div class="plancard"><div class="lbl">Подписано</div><div class="pf">112 <span class="of">/ 820</span></div><div class="ptrack"><div class="pfill" style="width:14%;background:var(--critical);"></div></div><div class="pct behind">14%</div></div>
+  </div>
+
+  <h2>По кампаниям и объявлениям</h2>
+  <table>
+    <thead><tr><th>Кампания / объявление</th><th>Показы</th><th>Клики</th><th>CTR</th><th>Заходы</th><th>Переход</th><th>Подписано</th></tr></thead>
+    <tbody>
+      <tr class="total"><td>Брендовая_Поиск</td><td>79 479</td><td>18 780</td><td>23,63%</td><td>15 037</td><td>462</td><td>88</td></tr>
+
+      <tr class="total"><td>Категорийная_Поиск</td><td>219 295</td><td>6 458</td><td>2,94%</td><td>5 749</td><td>213</td><td>14</td></tr>
+      <tr class="sub"><td>— ПДС прямой интент</td><td>44 712</td><td>1 332</td><td>2,98%</td><td>1 246</td><td>88</td><td>5</td></tr>
+      <tr class="sub"><td>— инф. спрос</td><td>174 583</td><td>5 126</td><td>2,94%</td><td>4 503</td><td>125</td><td>9</td></tr>
+
+      <tr class="total"><td>Пополнение_Поиск</td><td>181 426</td><td>5 324</td><td>2,93%</td><td>3 841</td><td>77</td><td>7</td></tr>
+
+      <tr class="total"><td>Сегменты_Поиск</td><td>166 309</td><td>3 693</td><td>2,22%</td><td>3 030</td><td>93</td><td>3</td></tr>
+      <tr class="sub"><td>— Женщины 35–44</td><td>29 979</td><td>259</td><td>0,86%</td><td>218</td><td>15</td><td>0</td></tr>
+      <tr class="sub"><td>— Мужчины 35–54</td><td>19 450</td><td>289</td><td>1,49%</td><td>216</td><td>15</td><td>2</td></tr>
+      <tr class="sub"><td>— тема «Свобода»</td><td>47 529</td><td>1 002</td><td>2,11%</td><td>825</td><td>24</td><td>0</td></tr>
+      <tr class="sub"><td>— тема «Капитал»</td><td>46 601</td><td>1 671</td><td>3,59%</td><td>1 407</td><td>22</td><td>1</td></tr>
+      <tr class="sub"><td>— тема «Время»</td><td>22 750</td><td>472</td><td>2,07%</td><td>364</td><td>17</td><td>0</td></tr>
+
+      <tr class="total"><td>Акция Х2_РСЯ</td><td>786 122</td><td>13 051</td><td>1,66%</td><td>9 038</td><td>26</td><td>15</td></tr>
+    </tbody>
+  </table>
+
+  <footer>«Переход на оформление» и «Подписано» считаются так же, как на актуальном дашборде — см. методологию там.</footer>
+</div>
+</body>
+</html>

@@ -81,19 +81,34 @@
     <tbody id="rows"></tbody>
   </table>
 
-  <footer>Архив ведётся с 15.09.2026 — более ранние обновления (01–14.09) не сохранялись отдельными файлами.</footer>
+  <footer>
+    Полные версии с комментариями ведутся с 15.09.2026 — более ранние обновления не сохранялись отдельными файлами.
+    Снимки за 01–13.09 восстановлены задним числом (15.09) прямым запросом к Директу и Метрике за каждый период —
+    цифры точные, но без day-over-day комментариев, которые звучали в чате в те дни.
+  </footer>
 </div>
 
 <script>
   // Добавляйте новую запись сюда каждый день перед пушем — самые свежие даты сверху.
+  // "full"+"team" — полные версии с обновления дашборда (с комментариями/без). "snapshot" — упрощённый исторический снимок (только цифры).
   const entries = [
     { date: "15.09.2026", full: "archive/2026-09-15-full.html", team: "archive/2026-09-15-team.html" },
+    { date: "13.09.2026", snapshot: "archive/2026-09-13.html" },
+    { date: "11.09.2026", snapshot: "archive/2026-09-11.html" },
+    { date: "09.09.2026", snapshot: "archive/2026-09-09.html" },
+    { date: "07.09.2026", snapshot: "archive/2026-09-07.html" },
+    { date: "05.09.2026", snapshot: "archive/2026-09-05.html" },
+    { date: "03.09.2026", snapshot: "archive/2026-09-03.html" },
+    { date: "01.09.2026", snapshot: "archive/2026-09-01.html" },
   ];
 
   const rows = document.getElementById("rows");
   for (const e of entries) {
     const tr = document.createElement("tr");
-    tr.innerHTML = `<td class="date">${e.date}</td><td><a class="dlink" href="${e.full}">Рабочая версия</a><a class="dlink" href="${e.team}">Командная версия</a></td>`;
+    const links = e.snapshot
+      ? `<a class="dlink" href="${e.snapshot}">Снимок (только цифры)</a>`
+      : `<a class="dlink" href="${e.full}">Рабочая версия</a><a class="dlink" href="${e.team}">Командная версия</a>`;
+    tr.innerHTML = `<td class="date">${e.date}</td><td>${links}</td>`;
     rows.appendChild(tr);
   }
 </script>
