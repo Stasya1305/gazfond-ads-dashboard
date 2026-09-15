@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Архив дашборда — ПДС, Яндекс.Директ</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&display=swap">
+<style>
+  :root{
+    color-scheme: light;
+    --surface-0:  #f9f9f7;
+    --surface-1:  #fcfcfb;
+    --surface-2:  #ffffff;
+    --ink-1:      #0b0b0b;
+    --ink-2:      #52514e;
+    --ink-3:      #898781;
+    --grid:       #e1e0d9;
+    --border:     rgba(11,11,11,0.10);
+    --accent:     #2a78d6;
+    --accent-soft:#e8f0fb;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      color-scheme: dark;
+      --surface-0:#0d0d0d; --surface-1:#1a1a19; --surface-2:#212120;
+      --ink-1:#ffffff; --ink-2:#c3c2b7; --ink-3:#898781;
+      --grid:#2c2c2a; --border:rgba(255,255,255,0.10);
+      --accent:#3987e5; --accent-soft:#132638;
+    }
+  }
+  :root[data-theme="dark"]{
+    color-scheme: dark;
+    --surface-0:#0d0d0d; --surface-1:#1a1a19; --surface-2:#212120;
+    --ink-1:#ffffff; --ink-2:#c3c2b7; --ink-3:#898781;
+    --grid:#2c2c2a; --border:rgba(255,255,255,0.10);
+    --accent:#3987e5; --accent-soft:#132638;
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:var(--surface-0); color:var(--ink-1);
+    font-family:"Manrope","Segoe UI",system-ui,-apple-system,sans-serif;
+    padding:32px 24px 64px;
+  }
+  .wrap{max-width:720px; margin:0 auto;}
+  .badge{
+    display:inline-block; font-size:11px; font-weight:700; letter-spacing:.04em; text-transform:uppercase;
+    background:var(--accent-soft); color:var(--accent); padding:3px 10px; border-radius:20px; margin-bottom:10px;
+  }
+  h1{font-size:24px; font-weight:800; letter-spacing:-0.01em; margin:0 0 6px; text-wrap:balance;}
+  .meta{color:var(--ink-2); font-size:13.5px; line-height:1.6; max-width:65ch; margin-bottom:28px;}
+  .back{font-size:13px; color:var(--accent); text-decoration:none; font-weight:600; display:inline-block; margin-bottom:20px;}
+
+  table{width:100%; border-collapse:collapse; background:var(--surface-1); border:1px solid var(--border); border-radius:14px; overflow:hidden;}
+  thead th{
+    text-align:left; font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:var(--ink-3);
+    padding:12px 16px; border-bottom:1px solid var(--grid); font-weight:700;
+  }
+  tbody td{padding:12px 16px; border-bottom:1px solid var(--grid); font-size:14px; font-variant-numeric:tabular-nums;}
+  tbody tr:last-child td{border-bottom:none;}
+  tbody tr:hover{background:var(--surface-2);}
+  td.date{font-weight:700; white-space:nowrap;}
+  a.dlink{color:var(--accent); text-decoration:none; font-weight:600; font-size:13.5px;}
+  a.dlink:hover{text-decoration:underline;}
+  a.dlink + a.dlink{margin-left:16px;}
+
+  footer{margin-top:28px; font-size:12px; color:var(--ink-3); line-height:1.6; max-width:65ch;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="index.html">← К актуальному дашборду</a>
+  <div class="badge">Архив</div>
+  <h1>История обновлений дашборда</h1>
+  <div class="meta">
+    Каждый день после обновления сюда добавляется снимок дашборда на эту дату (нарастающим итогом с начала месяца, как и на актуальной странице). Так можно посмотреть, как выглядели цифры в конкретный день.
+  </div>
+
+  <table>
+    <thead><tr><th>Дата</th><th>Версии</th></tr></thead>
+    <tbody id="rows"></tbody>
+  </table>
+
+  <footer>Архив ведётся с 15.09.2026 — более ранние обновления (01–14.09) не сохранялись отдельными файлами.</footer>
+</div>
+
+<script>
+  // Добавляйте новую запись сюда каждый день перед пушем — самые свежие даты сверху.
+  const entries = [
+    { date: "15.09.2026", full: "archive/2026-09-15-full.html", team: "archive/2026-09-15-team.html" },
+  ];
+
+  const rows = document.getElementById("rows");
+  for (const e of entries) {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `<td class="date">${e.date}</td><td><a class="dlink" href="${e.full}">Рабочая версия</a><a class="dlink" href="${e.team}">Командная версия</a></td>`;
+    rows.appendChild(tr);
+  }
+</script>
+</body>
+</html>
