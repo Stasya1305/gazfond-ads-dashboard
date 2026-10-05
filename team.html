@@ -30,10 +30,10 @@
 <p class="meta">Результаты по месяцам · обновлено 5 октября 2026</p>
 </header>
 <div class="months" role="group" aria-label="Выбор месяца">
-<button type="button" data-month="september" aria-pressed="true" aria-controls="september">Сентябрь 2026</button>
-<button type="button" data-month="october" aria-pressed="false" aria-controls="october">Октябрь 2026</button>
+<button type="button" data-month="september" aria-pressed="false" aria-controls="september">Сентябрь 2026</button>
+<button type="button" data-month="october" aria-pressed="true" aria-controls="october">Октябрь 2026</button>
 </div>
-<div id="september">
+<div id="september" hidden>
 <div class="month-heading">
 <h2>Сентябрь: итоги месяца</h2>
 <p class="meta">01–30 сентября 2026 · полный месяц · 5 кампаний</p>
@@ -769,27 +769,514 @@
 </details>
 </section>
 </div>
-<div id="october" hidden>
+<div id="october">
 <div class="month-heading">
-<h2>Октябрь 2026</h2>
-<p class="meta">Отдельный отчёт за 01–31 октября</p>
+<h2>Октябрь: текущие результаты</h2>
+<p class="meta">01–05 октября 2026 · срез на 5 октября · 5 кампаний</p>
 </div>
-<section class="card empty">
-<h3>Ожидаются план и выгрузки</h3>
-<p>Октябрьские показатели появятся после получения нового плана и данных за октябрь.</p>
-<p class="small">Сентябрьские итоги доступны на вкладке «Сентябрь 2026».</p>
+<div class="note warning">
+<b>Промежуточный отчёт.</b> 5 октября — неполный день. Показатели отражают данные на момент выгрузки.</div>
+<div class="kpis">
+<div class="kpi">
+<span>Показы</span>
+<strong>351 051</strong>
+<small>План 3 000 000 · 11,70%</small>
+</div>
+<div class="kpi">
+<span>Клики</span>
+<strong>16 756</strong>
+<small>План 190 000 · 8,82%</small>
+</div>
+<div class="kpi">
+<span>Подписания по цели</span>
+<strong>32</strong>
+<small>«Подписать договор»</small>
+</div>
+<div class="kpi">
+<span>Всего договоров</span>
+<strong>67</strong>
+<small>ГАЗ ЭДО · данные на 05.10.2026</small>
+</div>
+</div>
+<div class="split-metrics">
+<span>CTR: <b>4,77%</b>
+</span>
+<span>Подписания / клики: <b>0,19%</b>
+</span>
+</div>
+<p class="small">67 договоров — общий итог ГАЗ ЭДО за октябрь на дату отчёта. 32 подписания — конверсии рекламной цели в Яндекс Директ. Показатели разных систем приведены отдельно и не суммируются.</p>
+<section>
+<h2>План-факт по категориям</h2>
+<p class="small">План — на весь октябрь; факт — за 01–05.10.2026, последний день неполный. Показы и клики: факт, месячный план и процент выполнения. CTR: факт, план и отклонение в процентных пунктах.</p>
+<div class="table-scroll">
+<table class="plan-table">
+<thead>
+<tr>
+<th scope="col">Категория</th>
+<th scope="col">Показы</th>
+<th scope="col">Клики</th>
+<th scope="col">CTR</th>
+<th scope="col">Подписания<br>по цели</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<b>Плановые</b>
+<small>Брендовая, Категорийная,<br>Пополнение, Сегменты</small>
+</td>
+<td>
+<b>242 369</b>
+<small>план 2 000 000</small>
+<span style="color:var(--accent);font-weight:700">12,12%</span>
+</td>
+<td>
+<b>14 931</b>
+<small>план 160 000</small>
+<span style="color:var(--accent);font-weight:700">9,33%</span>
+</td>
+<td>
+<b>6,16%</b>
+<small>план 8,00%</small>
+<span class="below">−1,84 п. п.</span>
+</td>
+<td>31</td>
+</tr>
+<tr>
+<td>
+<b>Тестовые</b>
+<small>Акция Х2 · РСЯ</small>
+</td>
+<td>
+<b>108 682</b>
+<small>план 1 000 000</small>
+<span style="color:var(--accent);font-weight:700">10,87%</span>
+</td>
+<td>
+<b>1 825</b>
+<small>план 30 000</small>
+<span style="color:var(--accent);font-weight:700">6,08%</span>
+</td>
+<td>
+<b>1,68%</b>
+<small>план 3,00%</small>
+<span class="below">−1,32 п. п.</span>
+</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p class="small" style="margin-top:10px">План установлен на категорию целиком. Общий план двух категорий: 3 000 000 показов и 190 000 кликов. План по подписаниям не задан.</p>
+</section>
+<section>
+<h2>Кампании Яндекс Директ</h2>
+<div class="table-scroll">
+<table class="">
+<thead>
+<tr>
+<th scope="col">Кампания</th>
+<th scope="col">Категория</th>
+<th scope="col">Показы</th>
+<th scope="col">Клики</th>
+<th scope="col">CTR</th>
+<th scope="col">Подписания<br>по цели</th>
+<th scope="col">Подписания<br>/ клики</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<b>Брендовая_Поиск</b>
+<small>№ 713846992</small>
+</td>
+<td>Плановые</td>
+<td>33 012</td>
+<td>8 115</td>
+<td>24,58%</td>
+<td>25</td>
+<td>0,31%</td>
+</tr>
+<tr>
+<td>
+<b>Категорийная_Поиск</b>
+<small>№ 713866989</small>
+</td>
+<td>Плановые</td>
+<td>105 660</td>
+<td>2 638</td>
+<td>2,50%</td>
+<td>5</td>
+<td>0,19%</td>
+</tr>
+<tr>
+<td>
+<b>Пополнение_Поиск</b>
+<small>№ 713875553</small>
+</td>
+<td>Плановые</td>
+<td>70 851</td>
+<td>2 829</td>
+<td>3,99%</td>
+<td>0</td>
+<td>0,00%</td>
+</tr>
+<tr>
+<td>
+<b>Сегменты_Поиск</b>
+<small>№ 713877288</small>
+</td>
+<td>Плановые</td>
+<td>32 846</td>
+<td>1 349</td>
+<td>4,11%</td>
+<td>1</td>
+<td>0,07%</td>
+</tr>
+<tr>
+<td>
+<b>Акция Х2_РСЯ</b>
+<small>№ 713907878</small>
+</td>
+<td>Тестовые</td>
+<td>108 682</td>
+<td>1 825</td>
+<td>1,68%</td>
+<td>1</td>
+<td>0,05%</td>
+</tr>
+<tr>
+<td>
+<b>Все кампании</b>
+</td>
+<td>Все</td>
+<td>351 051</td>
+<td>16 756</td>
+<td>4,77%</td>
+<td>32</td>
+<td>0,19%</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section>
+<h2>Переходы и конверсии</h2>
+<p class="small">Рекламные клики → визиты на лендинг ПДС → визиты на оформление → подписания по цели.</p>
+<div class="kpis funnel">
+<div class="kpi">
+<span>1 · Клики</span>
+<strong>16 756</strong>
+<small>Яндекс Директ</small>
+</div>
+<div class="kpi">
+<span>2 · Лендинг ПДС</span>
+<strong>12 806</strong>
+<small>76,43% от кликов</small>
+</div>
+<div class="kpi">
+<span>3 · Оформление</span>
+<strong>314</strong>
+<small>2,45% от визитов на лендинг</small>
+</div>
+<div class="kpi">
+<span>4 · Подписания</span>
+<strong>32</strong>
+<small>10,19% от визитов на оформление</small>
+</div>
+</div>
+<div class="ratio-grid">
+<article class="card">
+<h3>Клик → оформление</h3>
+<span class="metric">1,87%</span>
+<p class="small">визиты на оформление / клики</p>
+</article>
+<article class="card">
+<h3>Лендинг → подписание</h3>
+<span class="metric">0,25%</span>
+<p class="small">подписания по цели / визиты на лендинг</p>
+</article>
+<article class="card">
+<h3>Клик → подписание</h3>
+<span class="metric">0,19%</span>
+<p class="small">подписания по цели / клики</p>
+</article>
+</div>
+<p class="small" style="margin-top:14px">Переходы сопоставлены по пяти utm_campaign в ветке yandex → cpc. Лендинг выгружен на уровне кампаний, оформление — по 11 показанным utm_content, сложенным до кампаний. Проценты — расчётные отношения суммарных показателей; клики, визиты и цели учитываются по-разному, последовательность действий одного пользователя не проверяется.</p>
+</section>
+<section>
+<h2>Переходы по кампаниям</h2>
+<div class="table-scroll">
+<table class="">
+<thead>
+<tr>
+<th scope="col">Кампания</th>
+<th scope="col">Клики</th>
+<th scope="col">Лендинг ПДС</th>
+<th scope="col">Оформление</th>
+<th scope="col">Подписания<br>по цели</th>
+<th scope="col">Подписания<br>/ клики</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<b>Брендовая_Поиск</b>
+<small>utm_campaign: brand</small>
+</td>
+<td>8 115</td>
+<td>
+<b>6 238</b>
+<small>76,87% от кликов</small>
+</td>
+<td>
+<b>214</b>
+<small>3,43% от лендинга</small>
+</td>
+<td>
+<b>25</b>
+<small>11,68% от оформления</small>
+</td>
+<td>0,31%</td>
+</tr>
+<tr>
+<td>
+<b>Категорийная_Поиск</b>
+<small>utm_campaign: category</small>
+</td>
+<td>2 638</td>
+<td>
+<b>2 247</b>
+<small>85,18% от кликов</small>
+</td>
+<td>
+<b>37</b>
+<small>1,65% от лендинга</small>
+</td>
+<td>
+<b>5</b>
+<small>13,51% от оформления</small>
+</td>
+<td>0,19%</td>
+</tr>
+<tr>
+<td>
+<b>Пополнение_Поиск</b>
+<small>utm_campaign: topup</small>
+</td>
+<td>2 829</td>
+<td>
+<b>1 824</b>
+<small>64,48% от кликов</small>
+</td>
+<td>
+<b>37</b>
+<small>2,03% от лендинга</small>
+</td>
+<td>
+<b>0</b>
+<small>0,00% от оформления</small>
+</td>
+<td>0,00%</td>
+</tr>
+<tr>
+<td>
+<b>Сегменты_Поиск</b>
+<small>utm_campaign: segment</small>
+</td>
+<td>1 349</td>
+<td>
+<b>985</b>
+<small>73,02% от кликов</small>
+</td>
+<td>
+<b>12</b>
+<small>1,22% от лендинга</small>
+</td>
+<td>
+<b>1</b>
+<small>8,33% от оформления</small>
+</td>
+<td>0,07%</td>
+</tr>
+<tr>
+<td>
+<b>Акция Х2_РСЯ</b>
+<small>utm_campaign: promo_x2</small>
+</td>
+<td>1 825</td>
+<td>
+<b>1 512</b>
+<small>82,85% от кликов</small>
+</td>
+<td>
+<b>14</b>
+<small>0,93% от лендинга</small>
+</td>
+<td>
+<b>1</b>
+<small>7,14% от оформления</small>
+</td>
+<td>0,05%</td>
+</tr>
+<tr>
+<td>
+<b>Все кампании</b>
+</td>
+<td>16 756</td>
+<td>
+<b>12 806</b>
+<small>76,43% от кликов</small>
+</td>
+<td>
+<b>314</b>
+<small>2,45% от лендинга</small>
+</td>
+<td>
+<b>32</b>
+<small>10,19% от оформления</small>
+</td>
+<td>0,19%</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p class="small" style="margin-top:14px">Весь итог выгрузки оформления — 574 визита: 314 по показанным рекламным UTM и 260 вне этих веток. Для расчёта переходов используются 314.</p>
+</section>
+<section>
+<h2>Детализация и источники</h2>
+<details>
+<summary>Переходы по дням</summary>
+<div class="table-scroll">
+<table class="">
+<thead>
+<tr>
+<th scope="col">Дата</th>
+<th scope="col">Лендинг ПДС</th>
+<th scope="col">Оформление</th>
+<th scope="col">Оформление / лендинг</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>01.10</td>
+<td>3 981</td>
+<td>101</td>
+<td>2,54%</td>
+</tr>
+<tr>
+<td>02.10</td>
+<td>4 116</td>
+<td>100</td>
+<td>2,43%</td>
+</tr>
+<tr>
+<td>03.10</td>
+<td>2 778</td>
+<td>67</td>
+<td>2,41%</td>
+</tr>
+<tr>
+<td>04.10</td>
+<td>1 158</td>
+<td>32</td>
+<td>2,76%</td>
+</tr>
+<tr>
+<td>05.10 · неполный день</td>
+<td>773</td>
+<td>14</td>
+<td>1,81%</td>
+</tr>
+</tbody>
+</table>
+</div>
+</details>
+<details>
+<summary>Оформление по UTM-веткам</summary>
+<div class="table-scroll">
+<table class="">
+<thead>
+<tr>
+<th scope="col">utm_campaign → utm_content</th>
+<th scope="col">Визиты на оформление</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>brand → brand_poisk_new</td>
+<td>214</td>
+</tr>
+<tr>
+<td>category → category_poisk_inf_spros</td>
+<td>26</td>
+</tr>
+<tr>
+<td>category → category_poisk_direct</td>
+<td>11</td>
+</tr>
+<tr>
+<td>topup → topup_poisk_new</td>
+<td>37</td>
+</tr>
+<tr>
+<td>promo_x2 → promo_x2_rsya</td>
+<td>14</td>
+</tr>
+<tr>
+<td>segment → segment_poisk_pension_capital</td>
+<td>11</td>
+</tr>
+<tr>
+<td>segment → segment_poisk_men</td>
+<td>1</td>
+</tr>
+<tr>
+<td>segment → segment_poisk_pension_time</td>
+<td>0</td>
+</tr>
+<tr>
+<td>segment → segment_poisk_women</td>
+<td>0</td>
+</tr>
+<tr>
+<td>segment → segment_poisk_pension</td>
+<td>0</td>
+</tr>
+<tr>
+<td>segment → segment_poisk_pension_freedom</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+</div>
+</details>
+<details>
+<summary>Источники данных и методика</summary>
+<div class="method">
+<p>Выгрузки охватывают 01–05.10.2026, получены 05.10.2026. Последний день не завершён. Итог ГАЗ ЭДО — 67 договоров, предоставлен пользователем 05.10.2026.</p>
+<p>Яндекс Директ: показы, клики и столбец «Конверсии» сложены по ID кампаний и сверены со строкой «Итого». В командном отчёте используется согласованная цель «Подписать договор». CTR = клики / показы × 100%.</p>
+<p>Метрика: атрибуция «Последний значимый переход (Кросс-девайс)». Лендинг содержит пять веток utm_campaign без детализации по utm_content. Оформление содержит 11 веток utm_content, которые сложены по соответствующим пяти кампаниям. Вложенные уровни повторно не учитываются. Полный состав источников остатка до общего итога оформления в выгрузке не раскрыт.</p>
+<p>План на октябрь предоставлен пользователем 05.10.2026. Плановые кампании: все четыре поисковые кампании; план — 2 000 000 показов, 160 000 кликов, CTR 8%. Тестовые: «Акция Х2_РСЯ»; план — 1 000 000 показов, 30 000 кликов, CTR 3%. Выполнение по объёмам = факт / месячный план × 100%. CTR категории = сумма кликов / сумма показов × 100%; отклонение CTR = факт минус план в процентных пунктах. План по подписаниям не задан. Выгрузка цели «Личный кабинет» за октябрь не предоставлена.</p>
+<ul>
+<li class="sourcefile">очет реклама.xlsx</li>
+<li class="sourcefile">заходы лендинг октябрь.xlsx</li>
+<li class="sourcefile">заходы на стр оформления октябрь.xlsx</li>
+</ul>
+</div>
+</details>
 </section>
 </div>
 <footer>
 <p>ГАЗФОНД ПН · Командный отчёт по рекламе ПДС</p>
-<p>Обновлено 05.10.2026 · ГАЗ ЭДО: 641 договор за сентябрь.</p>
+<p>Обновлено 05.10.2026 · Сентябрь: полный месяц · Октябрь: данные за 01–05.10, последний день неполный.</p>
 </footer>
 </main>
 <script>
 (() => {
   const buttons = Array.from(document.querySelectorAll('[data-month]'));
   function showMonth(month) {
-    if (!['september', 'october'].includes(month)) month = 'september';
+    if (!['september', 'october'].includes(month)) month = 'october';
     buttons.forEach(button => {
       const active = button.dataset.month === month;
       button.setAttribute('aria-pressed', String(active));
