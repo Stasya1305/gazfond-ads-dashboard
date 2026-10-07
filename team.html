@@ -16,7 +16,32 @@
     [hidden]{display:none!important}.month-heading{margin:28px 0 0}.month-heading h2{font-size:26px;margin-bottom:5px}.plan-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:22px 0}.plan-value{font-size:28px;line-height:1.3;font-weight:700;margin:10px 0 4px;font-variant-numeric:tabular-nums}.plan-result{display:flex;justify-content:space-between;gap:12px;align-items:baseline}.plan-result strong{font-size:23px}.plan-result small{font-size:12px;color:var(--muted)}.track{height:6px;background:#edf0f4;border-radius:6px;overflow:hidden;margin:12px 0}.track i{display:block;height:100%;background:var(--accent)}.track i.complete{background:var(--good)}.plan-table td{vertical-align:middle}.plan-table td:first-child{min-width:190px}.plan-table td span{font-size:12px}.funnel .kpi strong{font-size:27px}.ratio-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.ratio-grid .metric{margin-bottom:4px}.status-row{display:flex;gap:20px;flex-wrap:wrap;margin-top:16px}.status-row .card{flex:1;min-width:240px}.status-row strong{font-size:22px}.pending{background:#f0f3f6;color:var(--muted);border-radius:5px;padding:3px 8px;font-size:12px}.empty{max-width:700px;padding:28px}.empty h3{font-size:20px}.total-row td{font-weight:700;background:#f0f5fb}footer p{margin-bottom:4px}
     @media(max-width:800px){.plan-cards,.ratio-grid{grid-template-columns:1fr}.plan-cards .card{padding:18px}.plan-value{font-size:26px}}
     @media print{.months{display:none}.plan-cards{grid-template-columns:repeat(3,1fr)}.ratio-grid{grid-template-columns:repeat(3,1fr)}}
-    </style>
+
+/* October category plan visualization */
+#october .category-plans{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;margin:22px 0}
+#october .category-plan{--category:#246bc0;border:1px solid var(--line);border-top:4px solid var(--category);border-radius:12px;padding:24px;background:white;break-inside:avoid}
+#october .category-plan.test{--category:#168391}
+#october .category-plan h3{font-size:21px;margin-bottom:4px}
+#october .category-caption{font-size:13px;color:var(--muted);min-height:40px;margin-bottom:20px}
+#october .plan-indicator+.plan-indicator{margin-top:24px}
+#october .indicator-top{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+#october .indicator-top strong{font-size:26px;line-height:1.2;color:var(--category);font-variant-numeric:tabular-nums}
+#october .indicator-top span{font-size:14px;font-weight:650}
+#october .indicator-numbers{font-size:13px;margin:7px 0;color:var(--muted);font-variant-numeric:tabular-nums}
+#october .indicator-numbers b{color:var(--ink)}
+#october .plan-bar{height:12px;border-radius:8px;background:#eaf0f5;overflow:hidden;margin:9px 0}
+#october .plan-bar i{display:block;height:100%;border-radius:8px;background:var(--category);-webkit-print-color-adjust:exact;print-color-adjust:exact}
+#october .plan-remaining{font-size:12px;color:var(--muted);margin:0}
+#october .ctr-indicator{border-top:1px solid var(--line);margin-top:24px;padding-top:20px}
+#october .ctr-track{position:relative;height:14px;background:#eaf0f5;border-radius:8px;margin:17px 0 8px}
+#october .ctr-fill{height:100%;background:var(--category);border-radius:8px;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+#october .ctr-marker{position:absolute;top:-5px;height:24px;width:3px;background:var(--ink);transform:translateX(-50%);-webkit-print-color-adjust:exact;print-color-adjust:exact}
+#october .ctr-scale{display:flex;justify-content:space-between;font-size:11px;color:var(--muted)}
+#october .ctr-delta{font-size:13px;margin:12px 0 0;color:var(--muted)}
+@media(max-width:800px){#october .category-plans{grid-template-columns:1fr}}
+@media print{#october .category-plans{grid-template-columns:repeat(2,minmax(0,1fr))}#october .category-plan{padding:16px}}
+
+</style>
 </head>
 <body>
 <main class="wrap">
@@ -808,6 +833,112 @@
 <section>
 <h2>План-факт по категориям</h2>
 <p class="small">План — на весь октябрь; факт — за 01–07.10.2026, последний день неполный. Показы и клики: факт, месячный план и процент выполнения. CTR: факт, план и отклонение в процентных пунктах.</p>
+<div class="category-plans">
+<article class="category-plan planned">
+<h3>Плановые кампании</h3>
+<p class="category-caption">Все кампании, кроме «Акция Х2»: Брендовая, Категорийная, Пополнение, Сегменты.</p>
+<div class="plan-indicator">
+<div class="indicator-top">
+<span>Показы</span>
+<strong>19,73%</strong>
+</div>
+<p class="indicator-numbers">
+<b>394 660</b> из 2 000 000 · выполнено за 1–7 октября</p>
+<div class="plan-bar" role="progressbar" aria-label="Плановые: показы, выполнение месячного плана" aria-valuemin="0" aria-valuemax="100" aria-valuenow="19.73">
+<i style="width:19.7330%">
+</i>
+</div>
+<p class="plan-remaining">До месячного плана: 1 605 340</p>
+</div>
+<div class="plan-indicator">
+<div class="indicator-top">
+<span>Клики</span>
+<strong>16,12%</strong>
+</div>
+<p class="indicator-numbers">
+<b>25 788</b> из 160 000 · выполнено за 1–7 октября</p>
+<div class="plan-bar" role="progressbar" aria-label="Плановые: клики, выполнение месячного плана" aria-valuemin="0" aria-valuemax="100" aria-valuenow="16.12">
+<i style="width:16.1175%">
+</i>
+</div>
+<p class="plan-remaining">До месячного плана: 134 212</p>
+</div>
+<div class="ctr-indicator">
+<div class="indicator-top">
+<span>CTR · факт</span>
+<strong>6,53%</strong>
+</div>
+<p class="indicator-numbers">Цель на октябрь: <b>8,00%</b>
+</p>
+<div class="ctr-track" role="img" aria-label="CTR: факт 6,53%, план 8,00%; шкала от 0 до 10 процентов">
+<div class="ctr-fill" style="width:65.3423%">
+</div>
+<span class="ctr-marker" style="left:80%">
+</span>
+</div>
+<div class="ctr-scale">
+<span>0%</span>
+<span>Вертикальная отметка — план</span>
+<span>10%</span>
+</div>
+<p class="ctr-delta">До целевого CTR: <b>1,47 п. п.</b>
+</p>
+</div>
+</article>
+<article class="category-plan test">
+<h3>Тестовые кампании</h3>
+<p class="category-caption">Кампания «Акция Х2» в РСЯ.</p>
+<div class="plan-indicator">
+<div class="indicator-top">
+<span>Показы</span>
+<strong>14,07%</strong>
+</div>
+<p class="indicator-numbers">
+<b>140 731</b> из 1 000 000 · выполнено за 1–7 октября</p>
+<div class="plan-bar" role="progressbar" aria-label="Тестовые: показы, выполнение месячного плана" aria-valuemin="0" aria-valuemax="100" aria-valuenow="14.07">
+<i style="width:14.0731%">
+</i>
+</div>
+<p class="plan-remaining">До месячного плана: 859 269</p>
+</div>
+<div class="plan-indicator">
+<div class="indicator-top">
+<span>Клики</span>
+<strong>7,41%</strong>
+</div>
+<p class="indicator-numbers">
+<b>2 224</b> из 30 000 · выполнено за 1–7 октября</p>
+<div class="plan-bar" role="progressbar" aria-label="Тестовые: клики, выполнение месячного плана" aria-valuemin="0" aria-valuemax="100" aria-valuenow="7.41">
+<i style="width:7.4133%">
+</i>
+</div>
+<p class="plan-remaining">До месячного плана: 27 776</p>
+</div>
+<div class="ctr-indicator">
+<div class="indicator-top">
+<span>CTR · факт</span>
+<strong>1,58%</strong>
+</div>
+<p class="indicator-numbers">Цель на октябрь: <b>3,00%</b>
+</p>
+<div class="ctr-track" role="img" aria-label="CTR: факт 1,58%, план 3,00%; шкала от 0 до 10 процентов">
+<div class="ctr-fill" style="width:15.8032%">
+</div>
+<span class="ctr-marker" style="left:30%">
+</span>
+</div>
+<div class="ctr-scale">
+<span>0%</span>
+<span>Вертикальная отметка — план</span>
+<span>10%</span>
+</div>
+<p class="ctr-delta">До целевого CTR: <b>1,42 п. п.</b>
+</p>
+</div>
+</article>
+</div>
+<details>
+<summary>План-факт в таблице и подписания по цели</summary>
 <div class="table-scroll">
 <table class="plan-table">
 <thead>
@@ -867,6 +998,7 @@
 </tbody>
 </table>
 </div>
+</details>
 <p class="small" style="margin-top:10px">План установлен на категорию целиком. Общий план двух категорий: 3 000 000 показов и 190 000 кликов. План по подписаниям не задан.</p>
 </section>
 <section>
